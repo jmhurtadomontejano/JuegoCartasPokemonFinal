@@ -204,32 +204,36 @@ function shareCards(tiempo) {
     /*SHARE THE CARDS */
     var fadeInTime = 200;
     setTimeout(() => {
-        for (var i = 0; i <= 15 ; i++) {
-            $(".carta"+positions[i]).fadeIn(fadeInTime);
-            fadeInTime+=200;
+        for (var i = 0; i <= 15; i++) {
+            $(".carta" + positions[i]).fadeIn(fadeInTime);
+            fadeInTime += 200;
         }
     }, 500);
 
     //$("#showCards").removeClass("d-none");
 
-  /*  for (var i = 0; i <= 15; i++) {
-        setTimeout(() => {
-            $(".carta"+i).fadeIn(500);
-        }, 500)
-    };*/
+    /*  for (var i = 0; i <= 15; i++) {
+          setTimeout(() => {
+              $(".carta"+i).fadeIn(500);
+          }, 500)
+      };*/
     flag = true;
 }
 
 function hideCards(tiempo) {
     flag = false;
     /*SHARE THE CARDS */
-    var fadeOutTime = 200;
-    setTimeout(() => {
-        for (var i = 0; i <= 15; i++) {
-            $(".carta"+i).fadeOut(fadeOutTime);
-            fadeOutTime +=200;
-        }
-    }, 500);
+    // var fadeOutTime = 200;
+
+
+    /*  setTimeout(() => {
+          for (var i = 0; i <= 15; i++) {
+              $(".carta"+i).fadeOut(200);
+       //       fadeOutTime +=200;
+          }
+      }, 500);
+  */
+
 
     /*for (var i = ; i <= 15; i++) {
         setTimeout(() => {
@@ -254,6 +258,11 @@ function chekCard(e) {
 
         //Comprobacion de la carta bomba
         if (esBomba == "./imgs/bomba.png") {
+            /*QUITAR TODAS LAS CARTAS BLOQUEADAS y PONER CONTADOR DE PUNTOS A 0 */
+            $(".block").removeAttr("src");
+            $(".block").removeClass("block");
+            pointsCounter = 0;
+            changeInformationTitleWINPoint();
             failsCounter = failsCounter + 1;
             changeInformationTitleFailPoint();
             bombcard(e.target.id);
@@ -361,7 +370,7 @@ function showCards(tiempo) {
                 console.log("carta no bloqueada");
                 //SI ESTA BLOQUEADO NO HACE NADA
             } else {
-                
+
                 $("#" + j).removeAttr("src");
             }
         }
@@ -399,6 +408,8 @@ function showBomb(tiempo) {
 function bombcard(e) {
     flag = false;
     musicKoffing.play();
+
+    console.log("estamos en la bomba");
     $(".alert-success").removeClass("alert-primary alert-success").addClass("alert-warning");
     $(".alert-danger").removeClass("alert-primary alert-danger").addClass("alert-warning");
     if (language == "ES") {
@@ -572,123 +583,51 @@ function putInSpanish() {
     languageChangeJSON();
 }
 
+
+
 function languageChangeJSON() {
-    let xmlhttp = new XMLHttpRequest();
-    let url = "lang/lang.json";
-
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            let myArr = JSON.parse(this.responseText);
-            importJson(myArr);
-        }
-    };
-    xmlhttp.open("GET", url, true);
-    xmlhttp.send();
-}
-
-function importJson(json) {
     let language = localStorage.getItem("language");
     /*****CHANGE LANGUAGE IN MAINMENU*****/
     /*****CHANGE LANGUAGE IN OPTIONS MENU*****/
-    $("#mainTitle").html(json.lang[language].MainTitle);
-    $("#optionsTitle").html(json.lang[language].Options);
-    $("#gameOption").html(json.lang[language].Game);
-    $("#informationOption").html(json.lang[language].Information);
+    $.getJSON("lang/lang.json", function (json){
+        $("#mainTitle").html(json.lang[language].MainTitle);
+        $("#optionsTitle").html(json.lang[language].Options);
+        $("#gameOption").html(json.lang[language].Game);
+        $("#informationOption").html(json.lang[language].Information);
 
-    /*****CHANGE LANGUAGE IN LANGUAGE MENU*****/
-    $("#languageTitle").html(json.lang[language].Language);
-    $("#ES").html(json.lang[language].Spanish);
-    $("#EN").html(json.lang[language].English);
+        /*****CHANGE LANGUAGE IN LANGUAGE MENU*****/
+        $("#languageTitle").html(json.lang[language].Language);
+        $("#ES").html(json.lang[language].Spanish);
+        $("#EN").html(json.lang[language].English);
 
-    /*****CHANGE PLAY AND RESTART BUTTON*****/
-    $(".playButton").html(json.lang[language].Restart);
+        /*****CHANGE PLAY AND RESTART BUTTON*****/
+        $(".playButton").html(json.lang[language].Restart);
 
-    /*INFORMATION BOX*/
-    let infomationAlert = "";
-    //informationTitle.innerHTML = infomationAlert;
-    $("#informationTitle").html("" + json.lang[language].informationAlert);
+        /*INFORMATION BOX*/
+        let infomationAlert = "";
+        //informationTitle.innerHTML = infomationAlert;
+        $("#informationTitle").html("" + json.lang[language].informationAlert);
 
-    /*CHANGE SCORE BOX*/
-    $("#scoreTitle").html(json.lang[language].Score);
-    $("#errorsTitle").html(json.lang[language].Errors);
-    /*CHANGE TOP PLAYER BOX*/
-    $("#menuTopPlayerTitle").html(json.lang[language].TopPlayer);
-    $("#topPointsTitle").html(json.lang[language].Fails);
-    $("#menuTopPlayer").html(localStorage.getItem("topName"));
-    $("#topPoints").html(localStorage.getItem("fails"));
+        /*CHANGE SCORE BOX*/
+        $("#scoreTitle").html(json.lang[language].Score);
+        $("#errorsTitle").html(json.lang[language].Errors);
+        /*CHANGE TOP PLAYER BOX*/
+        $("#menuTopPlayerTitle").html(json.lang[language].TopPlayer);
+        $("#topPointsTitle").html(json.lang[language].Fails);
+        $("#menuTopPlayer").html(localStorage.getItem("topName"));
+        $("#topPoints").html(localStorage.getItem("fails"));
 
-    /*CHANGE SHOW CARDS*/
-    $(".showCards").html("" + json.lang[language].ShowCards);
-    localStorage.setItem("language", language);//create o modify the value of the WebStorage
+        /*CHANGE SHOW CARDS*/
+        $(".showCards").html("" + json.lang[language].ShowCards);
+        localStorage.setItem("language", language);//create o modify the value of the WebStorage
 
-    /*CHANGE MODAL CONTENT */
-    $("#configuration").html(json.lang[language].Configuration);
-    $("#userName").html(json.lang[language].YourName);
-    $(".facil").html(json.lang[language].Easy);
-    $(".normal").html(json.lang[language].Medium);
-    $(".dificil").html(json.lang[language].Advanced);
-    $(".leyenda").html(json.lang[language].Leyend);
-    $("#pulseHereToStart").html(json.lang[language].PulseHereToStart);
-
+        /*CHANGE MODAL CONTENT */
+        $("#configuration").html(json.lang[language].Configuration);
+        $("#userName").html(json.lang[language].YourName);
+        $(".facil").html(json.lang[language].Easy);
+        $(".normal").html(json.lang[language].Medium);
+        $(".dificil").html(json.lang[language].Advanced);
+        $(".leyenda").html(json.lang[language].Leyend);
+        $("#pulseHereToStart").html(json.lang[language].PulseHereToStart);
+    });
 }
-
-
-
-
-
-function inicio() {
-    $("p").on({
-        mouseenter: function () {
-            $(this).css("background-color", "lightblue");
-        }
-    })
-}
-
-function mensajeParametros(e) {
-    alert(e.data.nombre + "" + e.data.apellidos);
-
-}
-
-function inicio() {
-    jQuery.fx.speeds.muyRapido = 50;
-}
-
-//ocultar
-function ocultar() {
-    $("#ocultar").click(function () {
-        s("p").hide("fast");
-    })
-}
-
-//Mostrar
-function mostrar() {
-    $("#mostrar").click(function () {
-        s("p").show("fast");
-    })
-}
-
-//Toogle
-function mostrar() {
-    $("#toogle").click(function () {
-        s("p").toogle("fast");
-    })
-}
-
-//FadeOut
-function fadeToogle() {
-    $("#fadeToogle").click(function () {
-        s("p").toogle("fast");
-    })
-}
-
-$("#animar").click(function () {
-    $("#div1").animate({
-        left: '250px',
-        opacity: '0.5',
-    })
-})
-
-//Funcion Callback
-$("#callback").click(function () {
-
-})
