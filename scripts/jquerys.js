@@ -60,7 +60,7 @@ const musicMismagius = new Audio('../audio/mismagius.mp3');
 const musicGroudon = new Audio('../audio/groudon.mp3');
 
 function start() {  //Restart counter to 0
-    hideCards();
+    hideCards(2);
     /*****Lenguage By Default ES if we doesn´t Lenguage in LocalStorage *****/
     if (!localStorage.getItem("language")) localStorage.setItem('language', 'ES')
     if (!localStorage.getItem("userStore")) localStorage.setItem('userStore', JSON.stringify(defaultUsers))
@@ -202,12 +202,14 @@ function shareCards(tiempo) {
     //  tiempo = tiempo * 1000;
     flag = false;
     /*SHARE THE CARDS */
+    var fadeInTime = 200;
     setTimeout(() => {
         for (var i = 0; i <= 15 ; i++) {
-            $(".carta"+positions[i]).fadeIn(500);
+            $(".carta"+positions[i]).fadeIn(fadeInTime);
+            fadeInTime+=200;
         }
     }, 500);
-    flag = true;
+
     //$("#showCards").removeClass("d-none");
 
   /*  for (var i = 0; i <= 15; i++) {
@@ -215,15 +217,17 @@ function shareCards(tiempo) {
             $(".carta"+i).fadeIn(500);
         }, 500)
     };*/
+    flag = true;
 }
 
 function hideCards(tiempo) {
-    //  tiempo = tiempo * 1000;
     flag = false;
     /*SHARE THE CARDS */
+    var fadeOutTime = 200;
     setTimeout(() => {
         for (var i = 0; i <= 15; i++) {
-            $(".carta"+i).fadeOut(500);
+            $(".carta"+i).fadeOut(fadeOutTime);
+            fadeOutTime +=200;
         }
     }, 500);
 
@@ -353,13 +357,13 @@ function showCards(tiempo) {
     }
     setTimeout(() => {
         for (var j = 0; j <= positions.length; j++) {
-          /*  if (("#" + positions[j]).hasClass("block")) {
+            if ($("#" + j).hasClass("block")) {
+                console.log("carta no bloqueada");
                 //SI ESTA BLOQUEADO NO HACE NADA
             } else {
-                $("#" + positions[j]).attr("src", "");
-            }*/
-
-            $("#" + positions[j]).attr("src", "");
+                
+                $("#" + j).removeAttr("src");
+            }
         }
     }, tiempo);
     flag = true;
