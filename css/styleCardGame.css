@@ -42,9 +42,7 @@ p {
   margin-bottom: 0px;
 }
 
-td, tr, th, btn, button {
-  font-size: 1.5rem !important;
-}
+
 
 .mainTitle {
   background-color: #303841;
@@ -116,11 +114,7 @@ td, tr, th, btn, button {
   border: 1px solid #303841;
 }
 
-.btn-group {
-  padding: 2%;
-  font-size: 0.8em;
-  display: inline-block;
-}
+
 
 .pokeball {
   width: -moz-available;

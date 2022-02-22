@@ -138,11 +138,11 @@ function play() {
     }
 
     if (levelUser == null) {
-        console.log("ESTOY ENTRANDO A COMPROBAR EL NIVEL POR EL ACORDEON");
+     //   console.log("ESTOY ENTRANDO A COMPROBAR EL NIVEL POR EL ACORDEON");
         /*****3º TEST LEVEL SELECTION ACCORDION *****/
         if ($("#accordionLevel").is(':checked')) {
             levelUser = $("#accordionLevel").attr("id");;
-            console.log(levelUser);
+           // console.log(levelUser);
         }
 
         /* WE CHECK TE LEVEL SELECTED AN APPLY LEVEL PERSONALIZATION*/
@@ -217,7 +217,16 @@ function shareCards(tiempo) {
               $(".carta"+i).fadeIn(500);
           }, 500)
       };*/
+      putBackgroundPokeball();
     flag = true;
+}
+
+function putBackgroundPokeball(){
+    setTimeout(() => {
+        for (var i = 0; i <= 15; i++) {
+            $("#"+i).attr("src","imgs/pokeball.jfif");
+        }
+    }, 3000);
 }
 
 function hideCards(tiempo) {
@@ -239,10 +248,10 @@ function chekCard(e) {
             alert("la carta seleccionada " + e.target.src + " ya ha sido descubierta");
             return;
         }
-        console.log(e.target);
+      //  console.log(e.target);
         var url = ($(e.target).data("src"));
-        console.log(url);
-        console.log(e.target.id);
+     //   console.log(url);
+     //   console.log(e.target.id);
         showCard(e.target.id);
         esBomba = url;
 
@@ -360,7 +369,6 @@ function showCards(tiempo) {
     setTimeout(() => {
         for (var j = 0; j <= positions.length; j++) {
             if ($("#" + j).hasClass("block")) {
-                console.log("carta no bloqueada");
                 //SI ESTA BLOQUEADO NO HACE NADA
             } else {
 
@@ -402,7 +410,7 @@ function bombcard(e) {
     flag = false;
     musicKoffing.play();
 
-    console.log("estamos en la bomba");
+    console.log("estalló en la bomba");
     $(".alert-success").removeClass("alert-primary alert-success").addClass("alert-warning");
     $(".alert-danger").removeClass("alert-primary alert-danger").addClass("alert-warning");
     if (language == "ES") {
@@ -415,12 +423,14 @@ function bombcard(e) {
         setTimeout(() => {
             cardSelected = $("#" + e)[0];
             cardSelected.removeAttribute("src");
+            $("#"+cardSelected.id).attr("src","imgs/pokeball.jfif");
             flag = true;
         }, 1000);
 
     } else {
         setTimeout(() => {
             cardSelected.removeAttribute("src");
+            $("#"+cardSelected.id).attr("src","imgs/pokeball.jfif");
             card1ID = null;
             cardSelected = null;
             card1SRC = null;
@@ -431,6 +441,7 @@ function bombcard(e) {
         setTimeout(() => {
             cardSelected = $("#" + e)[0];
             cardSelected.removeAttribute("src");
+            $("#"+cardSelected.id).attr("src","imgs/pokeball.jfif");
             flag = true;
         }, 1000);
 
@@ -440,8 +451,10 @@ function bombcard(e) {
             card2ID = null;
             cardSelected2 = null;
             cardSelected2.removeAttribute("src");
+            $("#"+cardSelected2.id).attr("src","imgs/pokeball.jfif");
             flag = true;
         }, 1000);
+        flag=true;
     }
 
     return;
@@ -462,7 +475,6 @@ function ErrorCounterAndClean() {
         failsCounter = failsCounter + 1;
         /*WHEN WE HAVE LEYEND LEVEL, THE USER ONLY CAN HAVE 2 FAILS" */
         if (levelUser == "leyenda" && failsCounter == 2) {
-            console.log(levelUser);
             alert("YA TIENES 2 FALLOS, EL JUEGO SE REINICIARÁ");
             start();
         }
@@ -470,8 +482,11 @@ function ErrorCounterAndClean() {
         card1SRC = null;
         card2SRC = null;
         cardSelected.removeAttribute("src");
+        console.log(cardSelected.id);
+        $("#"+cardSelected.id).attr("src","imgs/pokeball.jfif");
         cardSelected2.removeAttribute("src");
-        // $cardSelected2.src = "";
+        $("#"+cardSelected2.id).attr("src","imgs/pokeball.jfif");
+
         cardSelected = null;
         cardSelected2 = null;
         card1ID = null;
@@ -501,7 +516,7 @@ function cargaProducto() {
 }
 
 function reproduceCardSound(pokemonRecived) {
-    console.log(pokemonRecived);
+  //  console.log(pokemonRecived);
     switch (pokemonRecived) {
         case "./imgs/Pikachu.png":
             musicPikachu.play();

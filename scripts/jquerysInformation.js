@@ -179,139 +179,6 @@ if (userName != null) {
     $("#nick").html("NO NAME USER");
 }
 
-function reproduceSound() {
-
-}
-
-function chekCard(e) {
-    if (e.target.className == "block") {
-        alert("la carta seleccionada " + e + " ya ha sido descubierta");
-        return;
-    }
-    //Comprobacion de la carta bomba
-    console.log(e.target);
-    console.log(e.target.src);
-    e.target.src = $(e.target).data("src");
-    var url = new URL(e.target.src);
-    esBomba = url.pathname;
-    if (esBomba == "/imgs/bomba.png") {
-        bombcard(e);
-    } else {
-        if (card1SRC == null) {
-            card1SRC = e.target.src;
-            card1ID = e.target.id;
-            cardSelected = $('#' + e.target.id)[0];//Deberia quitar el 0 pero en ese cas0 debo cambiar el resto de cardSelected.className por .addAtrribute 
-            showCard(card1ID);
-        } else {
-            if (card2SRC == null) {
-                card2SRC = e.target.src;
-                card2ID = e.target.id;
-                cardSelected2 = $('#' + e.target.id)[0];
-                showCard(card2ID);
-                if (card1SRC == card2SRC) {
-                    if (card1ID == card2ID) {
-                        alert("las 2 cartas seleccionadas es la misma. Vuelve a seleccionar la 2ª carta");
-                        card2SRC = null;
-                        card2ID = null;
-                        cardSelected2 = null;
-                    } else {
-                        pointsCounter = pointsCounter + 1;
-                        //bloqueo las cartas
-                        cardSelected.className = "block";
-                        cardSelected2.className = "block";
-                        changeInformationTitleWINPoint();
-                        progressBarValue = progressBarValue + 14, 28;
-                        // progressBar.innerHTML = progressBarValue;
-                        $("#progessBar").html(progressBarValue);
-                        //sonido ganador
-                        const musicPikachu = new Audio('/audio/pikachu.mp3');
-                        musicPikachu.play();
-                        {
-                            cartasDescubiertas += new Array(card1ID);
-                            cartasDescubiertas += new Array(card2ID);
-                        }
-                        if (pointsCounter == 7) {
-                            //cambiar clase de la caja cuando ganas a warning alert
-                            $(".alert-success").removeClass("alert-primary alert-success").addClass("warning alert")
-                            $(".alert-danger").removeClass("alert-primary alert-danger").addClass("warning alert")
-                            let information = $('#information');
-                            if (localStorage.getItem("fails") == null || failsCounter < localStorage.getItem("fails")) {
-                                localStorage.setItem("topName", userName);//create o modify the value topName of the WebStorage
-                                localStorage.setItem("score", pointsCounter);//create o modify the value score of the WebStorage
-                                localStorage.setItem("fails", failsCounter);//create o modify the value fails of the WebStorage
-                            }
-                            //sonido ganador
-                            const music = new Audio('/audio/victory.mp3');
-                            music.play();
-                            if (language == "ES") {
-                                informationTitle.textContent = "Excelente " + userName + ", has ganado los 6 puntos. El juego ha terminado";
-                            }
-                            if (language == "EN") {
-                                informationTitle.textContent = "Excelent " + userName + ", you win the 6 points. The Game is finish";
-                            }
-                        }
-                        card1ID = null;
-                        card2ID = null;
-                        card1SRC = null;
-                        card2SRC = null;
-                        cardSelected = null;
-                        cardSelected2 = null;
-                        //     setTimeout(() => {
-                        //     }, 1000);
-                    }
-                } else {
-                    ErrorCounterAndClean();
-                }
-            }
-
-        }
-    }
-}
-
-function bombcard(e) {
-    if (card1SRC == null) {
-        card1SRC = e.target.src;
-        card1ID = e.target.id;
-        cardSelected = $('#' + e.target.id)[0];
-    }
-    else {
-        if (card2SRC == null) {
-            card2SRC = e.target.src;
-            card2ID = e.target.id;
-            cardSelected2 = $('#' + e.target.id)[0];
-        }
-    }
-    $(".alert-success").removeClass("alert-primary alert-success").addClass("alert dark")
-    $(".alert-danger").removeClass("alert-primary alert-danger").addClass("alert dark")
-    ErrorCounterAndClean();
-    if (language == "ES") {
-        informationTitle.textContent = "BOMBA!!!, " + userName + " las cartas encontradas se resetearan y mantendras el contador de fallos";
-    }
-    if (language == "EN") {
-        informationTitle.textContent = "BOMB!!!, " + userName + " the cards founded will be reset, and you hold the fails counter";
-    }
-    return;
-}
-
-function PointsCounterAndClean() {
-
-}
-
-function ErrorCounterAndClean() {
-    failsCounter = failsCounter + 1;
-    changeInformationTitleFailPoint();
-    setTimeout(() => {
-        cardSelected.src = "";
-        cardSelected2.src = "";
-        card1ID = null;
-        card2ID = null;
-        card1SRC = null;
-        card2SRC = null;
-        cardSelected = null;
-        cardSelected2 = null;
-    }, 1000);
-}
-
 function showAlert(message) {
     setTimeout(() => {
         alert(message);
@@ -327,55 +194,12 @@ function showCard(idCarta) {
 }
 
 
-
-function changeInformationTitleWINPoint() {
-    $(".alert-primary").removeClass("alert-primary").addClass("alert-success")
-    $(".alert-danger").removeClass("alert-primary alert-danger").addClass("alert-success")
-    $(".alert dark").removeClass("alert dark").addClass("alert-success")
-    if (language == "ES") {
-        $("#informationTitle").html("Has ganado un punto, ahora tienes: " + pointsCounter);
-        $("#pointsMarkerSuccessful").html(pointsCounter + "<i class='fas fa-check-circle'>");
-    }
-    else if (language == "EN") {
-        $("#informationTitle").html("You Win 1 Point, now you have: " + pointsCounter);
-        $("#pointsMarkerSuccessful").html(pointsCounter + "<i class='fas fa-check-circle'>");
-    }
-}
-
-function changeInformationTitleFailPoint() {
-    $(".alert-primary").removeClass("alert-primary").addClass("alert-danger")
-    $(".alert-success").removeClass("alert-success").addClass("alert-danger")
-    $(".alert dark").removeClass("alert dark").addClass("alert-danger")
-    if (language == "ES") {
-        $("#informationTitle").html("Has fallado, tienes: " + failsCounter + " fallos.");
-        $("#pointsMarkerFailed").html(failsCounter + "<i class='far fa-times-circle'>");
-    }
-    if (language == "EN") {
-        $("#informationTitle").html("You fail, you have: " + failsCounter + " faults.");
-        $("#pointsMarkerFailed").html(failsCounter + "<i class='far fa-times-circle'>");
-    }
-
-}
-
 function ranking() {
     //primero = document.getElementById("primerPuesto");
     primero = $('#primerPuesto')
     primero.innerHTML = "El usuario que ha conseguido mayor puntuación a sido = " + userName;
 }
 
-
-
-/*function languageChangeXML() {
-    let xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            importXML(this);
-        }
-    };
-    xhr.open("GET", "/lang/language.xml", true);
-    xhr.send();
-}
-*/
 
 function languageChangeJSON() {
     let xmlhttp = new XMLHttpRequest();
@@ -463,43 +287,3 @@ function mensajeParametros(e) {
 function inicio() {
     jQuery.fx.speeds.muyRapido = 50;
 }
-
-//ocultar
-function ocultar() {
-    $("#ocultar").click(function () {
-        s("p").hide("fast");
-    })
-}
-
-//Mostrar
-function mostrar() {
-    $("#mostrar").click(function () {
-        s("p").show("fast");
-    })
-}
-
-//Toogle
-function mostrar() {
-    $("#toogle").click(function () {
-        s("p").toogle("fast");
-    })
-}
-
-//FadeOut
-function fadeToogle() {
-    $("#fadeToogle").click(function () {
-        s("p").toogle("fast");
-    })
-}
-
-$("#animar").click(function () {
-    $("#div1").animate({
-        left: '250px',
-        opacity: '0.5',
-    })
-})
-
-//Funcion Callback
-$("#callback").click(function () {
-
-})
