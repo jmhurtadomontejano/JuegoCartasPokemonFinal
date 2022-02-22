@@ -202,11 +202,11 @@ function shareCards(tiempo) {
     //  tiempo = tiempo * 1000;
     flag = false;
     /*SHARE THE CARDS */
-    var fadeInTime = 200;
+    var fadeInTime = 100;
     setTimeout(() => {
         for (var i = 0; i <= 15; i++) {
             $(".carta" + positions[i]).fadeIn(fadeInTime);
-            fadeInTime += 200;
+            fadeInTime += 100;
         }
     }, 500);
 
@@ -225,21 +225,11 @@ function hideCards(tiempo) {
     /*SHARE THE CARDS */
     // var fadeOutTime = 200;
 
-
-    /*  setTimeout(() => {
+     setTimeout(() => {
           for (var i = 0; i <= 15; i++) {
               $(".carta"+i).fadeOut(200);
-       //       fadeOutTime +=200;
           }
       }, 500);
-  */
-
-
-    /*for (var i = ; i <= 15; i++) {
-        setTimeout(() => {
-            $(".carta" + i).fadeOut(500);
-        }, 500)
-    };*/
 }
 
 function chekCard(e) {
@@ -265,6 +255,9 @@ function chekCard(e) {
             changeInformationTitleWINPoint();
             failsCounter = failsCounter + 1;
             changeInformationTitleFailPoint();
+            progressBarValue =0;
+            $(".progress-bar").html(progressBarValue + "%");
+            $(".progress-bar").css("width", progressBarValue + "%");
             bombcard(e.target.id);
         } else {
             if (card1SRC == null) {
