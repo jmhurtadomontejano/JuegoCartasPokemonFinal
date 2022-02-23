@@ -150,7 +150,7 @@ function play() {
             $("#showCards").removeClass("d-none");
         }
         if (levelUser == "normal") {
-            showBomb(3);
+            showBomb(5000);
             $("#showCards").addClass("d-none");
 
         }
@@ -159,7 +159,7 @@ function play() {
         }
 
         if (levelUser == "leyenda") {
-            showBomb(1);
+            showBomb(2);
             $("#showCards").addClass("d-none");
         }
     }
@@ -209,23 +209,30 @@ function shareCards(tiempo) {
         }
     }, 500);
 
-    //$("#showCards").removeClass("d-none");
+    if (levelUser == "facil") {
+        putBackgroundPokeball(3000);
+    }
+    if (levelUser == "normal") {
+        putBackgroundPokeball(3000);
 
-    /*  for (var i = 0; i <= 15; i++) {
-          setTimeout(() => {
-              $(".carta"+i).fadeIn(500);
-          }, 500)
-      };*/
-      putBackgroundPokeball();
+    }
+    if (levelUser == "dificil") {
+        putBackgroundPokeball(0);
+    }
+
+    if (levelUser == "leyenda") {
+        putBackgroundPokeball(2000);
+    }
+
     flag = true;
 }
 
-function putBackgroundPokeball(){
+function putBackgroundPokeball(tiempo){
     setTimeout(() => {
         for (var i = 0; i <= 15; i++) {
             $("#"+i).attr("src","imgs/pokeball.jpg");
         }
-    }, 3000);
+    }, tiempo);
 }
 
 function hideCards(tiempo) {
@@ -260,7 +267,6 @@ function chekCard(e) {
             $(".block").addClass("imgCard");
             $(".block").removeAttr("src");
             $(".block").removeClass("block");
-            $(".imgCard").attr("src","imgs/pokeball.jpg");
             pointsCounter = 0;
             changeInformationTitleWINPoint();
             failsCounter = failsCounter + 1;
@@ -297,9 +303,6 @@ function chekCard(e) {
                             progressBarValue += 14.3;
                             $(".progress-bar").html(progressBarValue + "%");
                             $(".progress-bar").css("width", progressBarValue + "%");
-                            //sonido ganador
-                            //const musicPikachu = new Audio('/audio/pikachu.mp3');
-                            // musicPikachu.play();
                             reproduceCardSound(card1SRC);
                             {
                                 cartasDescubiertas += new Array(card1ID);
@@ -373,7 +376,6 @@ function showCards(tiempo) {
                 //SI ESTA BLOQUEADO NO HACE NADA
             } else {
                 $("#" + j).removeAttr("src");
-                $("#" + j).attr("src","imgs/pokeball.jpg");
             }
         }
     }, tiempo);
@@ -399,14 +401,12 @@ function showBomb(tiempo) {
             cardSelected = $('#' + positions[i])[0];
 
             setTimeout(() => {
-                cardSelected.removeAttribute("src");
+                console.log("AQUI QUITAMOS EL ATRIBUTO SRC A LA BOMBA");
+              //  cardSelected.removeAttribute("src");
                 cardSelected = null;
-                /*RETURN FLAG TO TRUE FOR CAN CONTINUE THE GAME */
                 flag = true;
             }, tiempo);
         }
-        $(".imgCard").attr("src","imgs/pokeball.jpg");
-    console.log("Hemos llegado a añadir el atributo de pokeball.jpg despues de explotar la bomba")
     }
 }
 
@@ -426,27 +426,23 @@ function bombcard(e) {
     if (card1ID == null) {
         setTimeout(() => {
             cardSelected = $("#" + e)[0];
-            cardSelected.removeAttribute("src");
-            $("#"+cardSelected.id).attr("src","imgs/pokeball.jpg");
-            flag = true;
+            cardSelected.removeAttribute("src");         
         }, 1000);
 
     } else {
         setTimeout(() => {
             cardSelected.removeAttribute("src");
-            $("#"+cardSelected.id).attr("src","imgs/pokeball.jpg");
             card1ID = null;
             cardSelected = null;
             card1SRC = null;
-            flag = true;
+    
         }, 1000);
     }
     if (card2ID == null) {
         setTimeout(() => {
             cardSelected = $("#" + e)[0];
             cardSelected.removeAttribute("src");
-            $("#"+cardSelected.id).attr("src","imgs/pokeball.jpg");
-            flag = true;
+      
         }, 1000);
 
     } else {
@@ -455,13 +451,15 @@ function bombcard(e) {
             card2ID = null;
             cardSelected2 = null;
             cardSelected2.removeAttribute("src");
-            $("#"+cardSelected2.id).attr("src","imgs/pokeball.jpg");
-            flag = true;
         }, 1000);
         flag=true;
-        
     }
 
+    setTimeout(() =>{
+        $(".imgCard").attr("src","imgs/pokeball.jpg");
+        flag = true;
+    },1000);
+    
     return;
 }
 
@@ -488,7 +486,7 @@ function ErrorCounterAndClean() {
         card2SRC = null;
         cardSelected.removeAttribute("src");
         console.log(cardSelected.id);
-        $("#"+cardSelected.id).attr("src","imgs/pokeball.jpg");
+       $("#"+cardSelected.id).attr("src","imgs/pokeball.jpg");
         cardSelected2.removeAttribute("src");
         $("#"+cardSelected2.id).attr("src","imgs/pokeball.jpg");
 
@@ -498,6 +496,7 @@ function ErrorCounterAndClean() {
         card2ID = null;
         flag = true;
     }, 1000);
+    
 }
 
 function showAlert(message) {
