@@ -22,7 +22,6 @@ let progressBarValue = 0;
 let progresBar = 0;
 let cartasDescubiertas = new Array;
 const cards = $(".carta");
-var blockInteractions = $("#blockInteractions");
 
 /*VARIABLES ABOUT CARDS*/
 let card1SRC;
@@ -94,7 +93,7 @@ function play() {
     /*Change Classes in cards to hide images and restart */
     $(".block").addClass("imgCard");
     $(".block").removeClass("block");
-    $(".imgCard").attr("src", "");
+    
 
     /*****RANDONIZE CARDS AGAIN*****/
     randomCards();
@@ -224,7 +223,7 @@ function shareCards(tiempo) {
 function putBackgroundPokeball(){
     setTimeout(() => {
         for (var i = 0; i <= 15; i++) {
-            $("#"+i).attr("src","imgs/pokeball.jfif");
+            $("#"+i).attr("src","imgs/pokeball.jpg");
         }
     }, 3000);
 }
@@ -258,8 +257,10 @@ function chekCard(e) {
         //Comprobacion de la carta bomba
         if (esBomba == "./imgs/bomba.png") {
             /*QUITAR TODAS LAS CARTAS BLOQUEADAS y PONER CONTADOR DE PUNTOS A 0 */
+            $(".block").addClass("imgCard");
             $(".block").removeAttr("src");
             $(".block").removeClass("block");
+            $(".imgCard").attr("src","imgs/pokeball.jpg");
             pointsCounter = 0;
             changeInformationTitleWINPoint();
             failsCounter = failsCounter + 1;
@@ -371,8 +372,8 @@ function showCards(tiempo) {
             if ($("#" + j).hasClass("block")) {
                 //SI ESTA BLOQUEADO NO HACE NADA
             } else {
-
                 $("#" + j).removeAttr("src");
+                $("#" + j).attr("src","imgs/pokeball.jpg");
             }
         }
     }, tiempo);
@@ -396,6 +397,7 @@ function showBomb(tiempo) {
             $("#" + positions[i]).fadeIn(1000);
 
             cardSelected = $('#' + positions[i])[0];
+
             setTimeout(() => {
                 cardSelected.removeAttribute("src");
                 cardSelected = null;
@@ -403,6 +405,8 @@ function showBomb(tiempo) {
                 flag = true;
             }, tiempo);
         }
+        $(".imgCard").attr("src","imgs/pokeball.jpg");
+    console.log("Hemos llegado a añadir el atributo de pokeball.jpg despues de explotar la bomba")
     }
 }
 
@@ -423,14 +427,14 @@ function bombcard(e) {
         setTimeout(() => {
             cardSelected = $("#" + e)[0];
             cardSelected.removeAttribute("src");
-            $("#"+cardSelected.id).attr("src","imgs/pokeball.jfif");
+            $("#"+cardSelected.id).attr("src","imgs/pokeball.jpg");
             flag = true;
         }, 1000);
 
     } else {
         setTimeout(() => {
             cardSelected.removeAttribute("src");
-            $("#"+cardSelected.id).attr("src","imgs/pokeball.jfif");
+            $("#"+cardSelected.id).attr("src","imgs/pokeball.jpg");
             card1ID = null;
             cardSelected = null;
             card1SRC = null;
@@ -441,7 +445,7 @@ function bombcard(e) {
         setTimeout(() => {
             cardSelected = $("#" + e)[0];
             cardSelected.removeAttribute("src");
-            $("#"+cardSelected.id).attr("src","imgs/pokeball.jfif");
+            $("#"+cardSelected.id).attr("src","imgs/pokeball.jpg");
             flag = true;
         }, 1000);
 
@@ -451,10 +455,11 @@ function bombcard(e) {
             card2ID = null;
             cardSelected2 = null;
             cardSelected2.removeAttribute("src");
-            $("#"+cardSelected2.id).attr("src","imgs/pokeball.jfif");
+            $("#"+cardSelected2.id).attr("src","imgs/pokeball.jpg");
             flag = true;
         }, 1000);
         flag=true;
+        
     }
 
     return;
@@ -483,9 +488,9 @@ function ErrorCounterAndClean() {
         card2SRC = null;
         cardSelected.removeAttribute("src");
         console.log(cardSelected.id);
-        $("#"+cardSelected.id).attr("src","imgs/pokeball.jfif");
+        $("#"+cardSelected.id).attr("src","imgs/pokeball.jpg");
         cardSelected2.removeAttribute("src");
-        $("#"+cardSelected2.id).attr("src","imgs/pokeball.jfif");
+        $("#"+cardSelected2.id).attr("src","imgs/pokeball.jpg");
 
         cardSelected = null;
         cardSelected2 = null;
